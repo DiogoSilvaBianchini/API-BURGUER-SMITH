@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken")
 
 const createToken = async (payload) => {
     try {
-        const token = await jwt.sign({payload}, process.env.CLIENT_SECRET_KEY)
+        const token = await jwt.sign(payload, process.env.CLIENT_SECRET_KEY)
         return token
     } catch (error) {
         throw new Error
@@ -19,6 +19,23 @@ class UserController{
         try {
             const search = await userModel.findAll()
             return res.status(200).json({msg: "Todos os usuarios registrados", results: search, status: 200})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async getUserByToken(req,res,next){
+        try {
+            const {authorization} = req.headers
+            const { user } = jwt.decode(authorization)
+            const findUser = await userModel.findById(user, {attributes: {exclude: ["createdAt", "updatedAt", "buy_list"]}})
+            
+            if(findUser){
+                return res.status(200).json({msg: "Usuario encontrado com sucesso!", results: {user: findUser}, status: 200})
+            }else{
+                return res.status(200).json({msg: "Usuario não encontrado", results: false, status: 200})
+            }
+
         } catch (error) {
             next(error)
         }
@@ -38,7 +55,7 @@ class UserController{
         }
     }
 
-    static async getUserByEmail(req,res,next){
+    static async validateUserByEmail(req,res,next){
         const {email} = req.body
         try {
             const search = await userModel.findOne({where: {email}})
@@ -47,8 +64,8 @@ class UserController{
                 return res.status(401).json({msg: "Usuario não encontrado", results: false, status: 401})
             }
 
-            const token = await createToken({name: search.email})
-            return res.status(200).json({msg: "Usuario encontrado com sucesso!", results: {user: search, token}, status: 200})
+            const token = await createToken({user: search.id})
+            return res.status(200).json({msg: "Usuario encontrado com sucesso!", results: {token: token}, status: 200})
         } catch (error) {
             
         }
@@ -57,19 +74,25 @@ class UserController{
     static async validateToken(req,res,next){
         try {
             const token = req.headers.authorization
+
             const validate = await jwt.verify(token, process.env.CLIENT_SECRET_KEY)
             if(!validate) return res.status(401).json({msg: "Token inválido", results: false, status: 401})
 
-            const {email} = await jwt.decode(token)
-            const searchUser = await userModel.findOne({email})
+            const {user} = await jwt.decode(token)
             
+            const searchUser = await userModel.findById(user, {attributes: ["id"]})
             if(searchUser){
-                return res.status(200).json({msg: "Usuario encontrado com sucesso!", results: searchUser, status: 200})
+                return res.status(200).json({msg: "Usuario encontrado com sucesso!", results: true, status: 200})
             }else{
                 return res.status(401).json({msg: "Usuario não encontrado!", results: false, status: 401})
             }
         } catch (error) {
-            next(error)
+            console.log(error.message)
+            if(error.message.includes("jwt malformed")){
+                return res.status(401).json({msg: "token inválido", results: false, status: 401})
+            }else{
+                next(error)
+            }
         }
     }
 

@@ -87,11 +87,11 @@ class ProductController{
     }
 
     static async createNewProduct(req,res,next){
-        const imgsKeyAws = req.files.map(img => img.key)
+        const imgName = req.files.map(file => file.filename)
+
         const {title, describe, price, categoryId, ingredients} = req.body
         
         try {
-
             const stripeProduct = await stripe.products.create({
                 name: title,
                 description: describe
@@ -105,7 +105,7 @@ class ProductController{
 
             console.log(priceProduct.id)
 
-            await services.createNewRegister({title, describe, price, ingredients: ingredients.split(','), categoryId: Number(categoryId), imgs: imgsKeyAws, stripe_product_ID: stripeProduct.id, stripe_price_ID: priceProduct.id})
+            await services.createNewRegister({title, describe, price, ingredients: ingredients.split(','), categoryId: Number(categoryId), imgs: imgName, stripe_product_ID: stripeProduct.id, stripe_price_ID: priceProduct.id})
 
             return res.status(201).json({results: "Produto adicionado com sucesso", status: 201})
         } catch (error) {

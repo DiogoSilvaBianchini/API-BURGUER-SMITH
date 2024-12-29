@@ -9,6 +9,8 @@ const app = express()
 
 config()
 
+app.use("/imgs", express.static("./uploads/imgs"))
+
 sequelize.sync({alter: true}).then(() => {
     mongoConnection(app)
     router(app)
