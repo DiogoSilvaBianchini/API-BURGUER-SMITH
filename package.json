@@ -5,8 +5,7 @@
   "scripts": {
     "start": "node ./index.js",
     "dev": "nodemon .",
-    "test": "jest --passWithNoTests",
-    "vercel-build": "npx sequelize-cli db:migrate"
+    "test": "jest --passWithNoTests"
   },
   "keywords": [],
   "author": "Diogo Bianchini",
