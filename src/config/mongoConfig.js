@@ -5,8 +5,10 @@ const mongoConnection = () => {
 
     const host = NODE_ENV == "development" ? "0.0.0.0" : DB_HOST
 
-    const urlConnect = `mongodb://${DB_MONGO_USER_NAME}:${DB_MONGO_PASSWORD}@${host}:${DB_MONGO_PORT}/${DB_MONGO_NAME}?authSource=admin`
-
+    const urlConnect = NODE_ENV == "development" ?
+    `mongodb://${DB_MONGO_USER_NAME}:${DB_MONGO_PASSWORD}@${host}:${DB_MONGO_PORT}/${DB_MONGO_NAME}?authSource=admin`:
+    `mongodb+srv://${DB_MONGO_USER_NAME}:${DB_MONGO_PASSWORD}@cluster0.j2ukr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+    
     const mongoConfig = {
         serverSelectionTimeoutMS: 20000, 
         socketTimeoutMS: 20000,

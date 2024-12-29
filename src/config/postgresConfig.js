@@ -5,7 +5,13 @@ module.exports = {
     "username": process.env.DB_POSTGRES_USER_NAME,
     "password": process.env.DB_POSTGRES_PASS,
     "database": process.env.DB_POSTGRES_NAME,
-    "host": "0.0.0.0",
+    "host": process.env.DB_POSTGRES_HOST,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },
     "dialect": "postgres",
     "logging": false,
     "pool": {
@@ -20,8 +26,14 @@ module.exports = {
     "username": process.env.DB_POSTGRES_USER_NAME,
     "password": process.env.DB_POSTGRES_PASS,
     "database": process.env.DB_POSTGRES_NAME,
-    "host": "db_postgres",
+    "host": "ep-restless-paper-a81dlkit.eastus2.azure.neon.tech",
     "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },
     "logging": false,
     "pool": {
       max: 10,
