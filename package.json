@@ -30,11 +30,11 @@
     "sequelize": "^6.37.3",
     "socket.io": "^4.8.1",
     "stripe": "^17.2.1",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "sequelize-cli": "^6.6.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^3.1.4",
-    "sequelize-cli": "^6.6.2"
+    "nodemon": "^3.1.4"
   }
 }
