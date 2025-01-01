@@ -11,7 +11,7 @@ const cors = require("cors")
 module.exports = routes = (app) => {
     app.use(cors())
     //Routes da documentação
-    app.use("/api-docs", swaaggerUi.serve, swaaggerUi.setup(swaggerConfig))
+    app.use("/", swaaggerUi.serve, swaaggerUi.setup(swaggerConfig))
 
     //Routes de Serviço
     app.use(

@@ -2,8 +2,11 @@
   "name": "postgres-api",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
-    "start": "node ./index.js",
+    "start": "node index.js",
     "dev": "nodemon .",
     "test": "jest --passWithNoTests"
   },
