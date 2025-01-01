@@ -6,6 +6,7 @@
             "use": "@vercel/node"
         }
     ],
+    "buildCommand": "npm i && npm i -g pg && npm run build",
     "routes": [
         {
             "src": "/(.*)",
