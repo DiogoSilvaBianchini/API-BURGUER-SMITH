@@ -4,7 +4,7 @@ const express = require("express")
 const router = require("./src/routes")
 const {sequelize} = require("./src/database/postgress/models")
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 8082
 const app = express()
 
 config()
