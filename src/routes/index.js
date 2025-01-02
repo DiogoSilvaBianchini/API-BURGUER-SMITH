@@ -10,6 +10,11 @@ const cors = require("cors")
 
 module.exports = routes = (app) => {
     app.use(cors())
+
+    app.get("/", (req,res) => {
+        return res.status(200).json({msg: "Server ok", status: 200})
+    })
+
     //Routes da documentação
     app.use("/docs", swaaggerUi.serve, swaaggerUi.setup(swaggerConfig))
 
